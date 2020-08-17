@@ -5,8 +5,8 @@ This is a repo that will be used for the projects required from them [Udacity Na
 
 ## Project 1 - Write a blog
 
-## The Blog Post
-The blog post can be found [here](https://lunkwillandfook.dev/2020/08/17/are-you-in-sales-or-hr-chances-are-you-might-be-leaving-your-job/). 
+### The Blog Post
+The blog post can be found [here](https://lunkwillandfook.dev/2020/08/17/are-you-in-sales-or-hr-chances-are-you-might-be-leaving-your-job/).
 
 ### Motivation behind the project
 The motivation behind this was to demonstrate the [CRISP Data modelling](https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining) process covered in the course. There are 3 notebook in the directory the repo does not cover stage 1 understanding the business problem, this will be covered in the commentary on the blog post. The notebooks will cover the topics of:
@@ -52,5 +52,15 @@ As well as dealing with the categorical values in the dataset.
 
 The model creates some histograms of the data frame some are useful some aren't. There is also a seaborn heat map included to show some correlations between dimensions.
 
-
 The first project's jupyter notebooks can be found in the Project 1 folder.
+
+### Technicalities
+There are a few points to note on the data set.
+
+* The data set is fictional
+* The data set is clean
+* The data set feels on the small side
+* There are a few biases in the data
+  - It's weighted towards the male gender
+  - It has a strong representation from the R & D department
+  
