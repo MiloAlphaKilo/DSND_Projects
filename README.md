@@ -5,6 +5,9 @@ This is a repo that will be used for the projects required from them [Udacity Na
 
 ## Project 1 - Write a blog
 
+## The Blog Post
+The blog post can be found [here](https://lunkwillandfook.dev/2020/08/17/are-you-in-sales-or-hr-chances-are-you-might-be-leaving-your-job/). 
+
 ### Motivation behind the project
 The motivation behind this was to demonstrate the [CRISP Data modelling](https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining) process covered in the course. There are 3 notebook in the directory the repo does not cover stage 1 understanding the business problem, this will be covered in the commentary on the blog post. The notebooks will cover the topics of:
 
