@@ -109,6 +109,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+venv_dashb_web/
 
 # Spyder project settings
 .spyderproject
@@ -130,3 +131,6 @@ dmypy.json
 
 # MacOS files
 .DS_Store
+
+# Data (due to size)
+*.csv
