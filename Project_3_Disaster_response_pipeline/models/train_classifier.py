@@ -1,24 +1,88 @@
 import sys
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
+
+import pandas as pd
+import pickle
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+
+from sklearn.metrics import classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
+from sklearn.multioutput import MultiOutputClassifier
+
+from sklearn.pipeline import Pipeline
+
+from sqlalchemy import create_engine
 
 
 def load_data(database_filepath):
-    pass
+    engine = create_engine('sqlite:///' + database_filepath)
+    df = pd.read_sql_table('disaster_messages', engine)
+
+    X = df.message.values
+    Y = df.iloc[:, 4:]
+    category_names = df.iloc[:, 4:].columns.tolist()
+
+    return X, Y, category_names
 
 
 def tokenize(text):
-    pass
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens
 
 
 def build_model():
-    pass
+    # pipeline = Pipeline([
+    #     ('vect', CountVectorizer(tokenizer=tokenize, min_df=5)),
+    #     ('tfidf', TfidfTransformer(use_idf=True)),
+    #     ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=10,
+    #                                                          min_samples_split=10)))
+    # ])
+
+    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
+                         ('tfidf', TfidfTransformer()),
+                         ('clf', MultiOutputClassifier(RandomForestClassifier()))
+                         ])
+
+    # Create parameters dictionary
+    # parameters = {'vect__min_df': [1, 5],
+    #               'tfidf__use_idf': [True, False],
+    #               'clf__estimator__n_estimators': [10, 25],
+    #               'clf__estimator__min_samples_split': [2, 5, 10]}
+
+    parameters = {'clf__estimator__class_weight': [None],
+                  'clf__estimator__n_estimators': [10, 20],
+                  'clf__estimator__max_depth': [2, None],
+                  'vect__ngram_range': ((1, 1), (1, 2)),
+                  'vect__min_df': [1, 5],
+                  'tfidf__use_idf': [True, False],
+                  }
+
+    model = GridSearchCV(estimator=pipeline, param_grid=parameters)
+
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    pass
+
+    Y_pred = model.predict(X_test)
+    print(classification_report(Y_test, Y_pred, target_names=category_names))
 
 
 def save_model(model, model_filepath):
-    pass
+    pickle.dump(model, open(model_filepath+'.sav', 'wb'))
 
 
 def main():
