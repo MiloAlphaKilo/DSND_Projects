@@ -39,6 +39,7 @@ def clean_data(df):
     df = df.drop('categories', axis=1)
     df.sort_values('id', inplace=True)
     df.drop_duplicates(keep='first', inplace=True)
+    df['related'].replace(2, 1, inplace=True)
 
     print(df.columns)
     print(df.head())

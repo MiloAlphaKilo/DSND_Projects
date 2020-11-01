@@ -81,6 +81,7 @@ In order to run the application you will require the following Python repositori
 * numpy
 * pandas
 * pickle
+* plotly
 * scikit-learn (a.k.a - sklearn)
 * sqlalchemy
 

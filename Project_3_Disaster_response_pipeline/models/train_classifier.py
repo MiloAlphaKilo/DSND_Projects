@@ -44,17 +44,17 @@ def tokenize(text):
 
 
 def build_model():
-    # pipeline = Pipeline([
-    #     ('vect', CountVectorizer(tokenizer=tokenize, min_df=5)),
-    #     ('tfidf', TfidfTransformer(use_idf=True)),
-    #     ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=10,
-    #                                                          min_samples_split=10)))
-    # ])
+    pipeline = Pipeline([
+        ('vect', CountVectorizer(tokenizer=tokenize, min_df=5)),
+        ('tfidf', TfidfTransformer(use_idf=True)),
+        ('clf', MultiOutputClassifier(RandomForestClassifier(n_estimators=10,
+                                                             min_samples_split=10)))
+    ])
 
-    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
-                         ('tfidf', TfidfTransformer()),
-                         ('clf', MultiOutputClassifier(RandomForestClassifier()))
-                         ])
+    # pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
+    #                      ('tfidf', TfidfTransformer()),
+    #                      ('clf', MultiOutputClassifier(RandomForestClassifier()))
+    #                      ])
 
     # Create parameters dictionary
     # parameters = {'vect__min_df': [1, 5],
@@ -80,9 +80,13 @@ def evaluate_model(model, X_test, Y_test, category_names):
     Y_pred = model.predict(X_test)
     print(classification_report(Y_test, Y_pred, target_names=category_names))
 
+    # for i, col in category_names:
+    #     print(f"{col} category metrics: ")
+    #     print(classification_report(Y_test.iloc[:, i], Y_pred[:, i]))
+
 
 def save_model(model, model_filepath):
-    pickle.dump(model, open(model_filepath+'.sav', 'wb'))
+    pickle.dump(model, open(model_filepath, 'wb'))
 
 
 def main():
