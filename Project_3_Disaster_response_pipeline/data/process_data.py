@@ -4,6 +4,15 @@ from sqlalchemy import create_engine
 
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    The function reads in the data files to pandas dataframes.
+    The data frames are then merged on the common element of id.
+
+    :messages_filepath param1: directory location of the messages flat file
+    :categories_filepath param2: directory location of the categories flat file
+    :df: a data frame of the merged data sets is returned.
+    """
+
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     df = pd.merge(messages, categories, on='id')
@@ -12,6 +21,15 @@ def load_data(messages_filepath, categories_filepath):
 
 
 def clean_data(df):
+    """
+    The function receives the dataframe created in the load data function.
+    Through a process of cleaning recreated the headers, removed duplicates,
+        and created binary values of the categorical variables.
+
+    :df param1: This is the dataframe generated from the load data function
+    :df: The function returns a dataframe with cleaned data
+    """
+
     column_names = []
     categories_col_list = ['id', 'message', 'original', 'genre', 'categories']
 
@@ -48,11 +66,21 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
+    """
+    The dataframe is passed into the function and saved to a sqlite dB into the database_filename variable
+
+    :df param1: This is the df that has been cleaned and is not ready for output
+    :database_filename param2: This is the desired output directory for the sqlite dB
+    """
     engine = create_engine('sqlite:///' + database_filename)
     df.to_sql('disaster_messages', engine, index=False)
 
 
 def main():
+    """
+    The main function for the application. From here the load, clean and save functions are executed.
+    """
+
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]

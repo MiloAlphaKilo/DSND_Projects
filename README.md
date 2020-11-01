@@ -1,7 +1,39 @@
 # DSND_Projects
 
-This is a repo that will be used for all the projects required from them [Udacity Nano Degree in Data Science](https://www.udacity.com/course/data-scientist-nanodegree--nd025?utm_source=gsem_brand&utm_medium=ads_n&utm_campaign=8301633066_c&utm_term=85414326876&utm_keyword=udacity%20data%20science%20nanodegree_e&gclid=EAIaIQobChMIqq6P6Nug6wIVSOztCh3AvQGCEAAYAiAAEgJeifD_BwE).
+This is a repo that will be used for ALL the projects required from them [Udacity Nano Degree in Data Science](https://www.udacity.com/course/data-scientist-nanodegree--nd025?utm_source=gsem_brand&utm_medium=ads_n&utm_campaign=8301633066_c&utm_term=85414326876&utm_keyword=udacity%20data%20science%20nanodegree_e&gclid=EAIaIQobChMIqq6P6Nug6wIVSOztCh3AvQGCEAAYAiAAEgJeifD_BwE).
 
+## Project 3 - Disaster Response Pipeline
+
+This project is aimed at building an ETL and ML pipeline to understand the relevance of text messages received by emergency response centres. 
+
+### Files relevant to this project.
+Relevant files and directories: 
+* app/run.py --> This executes the web front end.
+* data/process_data.py --> This extracts the data from the flat files and loads it to a sqlite dB.
+* models/train_classifier.py --> train_classifier builds and trains the model with an evaluation. 
+* Flat data is stored in the data files disaster_categories.csv, and disaster_messages.csv
+
+In order to run the application you will require the following Python repositories.
+* nltk
+* numpy
+* pandas
+* pickle
+* plotly
+* scikit-learn (a.k.a - sklearn)
+* sqlalchemy
+
+### How to run this project
+You can find the detailed steps in the Project 3 readme. 
+I have included the steps here as well, just in case. 
+
+1. This will extract the data from the provided csv files and output a sqlite dB (run this from the project root).
+`python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+2. This step loads data from the dB, trains and evaluates the model. Once done it will write the model to a Pickle file. Step 2: This step loads data from the dB, trains and evaluates the model. Once done it will write the model to a Pickle file. (run this from the project root).   
+`python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+3. This runs the web interface to show you the analysis of the model. (run this from the project app directory) 
+`python run.py`
+4. You can access the inter face from the below address.
+`Go to http://0.0.0.0:3001/`
 
 ## Project 1 - Write a blog
 
@@ -63,37 +95,3 @@ There are a few points to note on the data set.
 * There are a few biases in the data
   - It's weighted towards the male gender
   - It has a strong representation from the R & D department
-  
-## Project 3 - Disaster Response Pipeline
-
-This project is aimed at building an ETL and ML pipeline to understand the relevance of text messages received by emergency response centres. 
-
-### Files relevant to this project.
-There are 3 directories: 
-* app
-* data
-* models
-
-The app directory will contain the web front end for the model based on the data. 
-
-In order to run the application you will require the following Python repositories.
-* nltk
-* numpy
-* pandas
-* pickle
-* plotly
-* scikit-learn (a.k.a - sklearn)
-* sqlalchemy
-
-### How to run this project
-You can find the detailed steps in the Project 3 readme. 
-I have included the steps here as well, just in case. 
-
-1. This will extract the data from the provided csv files and output a sqlite dB (run this from the project root).
-`python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-2. This step loads data from the dB, trains and evaluates the model. Once done it will write the model to a Pickle file. Step 2: This step loads data from the dB, trains and evaluates the model. Once done it will write the model to a Pickle file. (run this from the project root).   
-`python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
-3. This runs the web interface to show you the analysis of the model. (run this from the project app directory) 
-`python run.py`
-4. You can access the inter face from the below address.
-`Go to http://0.0.0.0:3001/`

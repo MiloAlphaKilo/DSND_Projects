@@ -1,26 +1,29 @@
-import sys
 import nltk
+import pandas as pd
+import pickle
+import sys
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger'])
-
-import pandas as pd
-import pickle
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.multioutput import MultiOutputClassifier
-
 from sklearn.pipeline import Pipeline
-
 from sqlalchemy import create_engine
 
 
 def load_data(database_filepath):
+    """
+    This function loads the sqlite dB into a dataframe and allocated the X, Y variables.
+    It also determines the category names from the dataframe header.
+
+    :database_filename param1: this is a first param
+    :returns: X, Y variables and category names.
+    """
+
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table('disaster_messages', engine)
 
@@ -32,6 +35,12 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """
+    The function tokenizes the text passed into the function and normalises the data.
+
+    :text param1: text strings are passed into the function
+    :clean_tokens: text strings that have been tokenized and lemmatized
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -44,6 +53,11 @@ def tokenize(text):
 
 
 def build_model():
+    """
+    build_model() constructs the pipeline and parameters before building the model using gridsearch
+
+    :model: a data model is returned
+    """
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize, min_df=5)),
         ('tfidf', TfidfTransformer(use_idf=True)),
@@ -76,6 +90,14 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    evaluate_model() does exactly that building model.predict and printing out an f11 classification report
+
+    :model param1: input is the model from build_model() function
+    :X_test param2: X_test split from the train_test_split()
+    :Y_test param3: Y_test split from the train_test_split()
+    :category_names param4: The category names for the classification report normally the df headers
+    """
 
     Y_pred = model.predict(X_test)
     print(classification_report(Y_test, Y_pred, target_names=category_names))
@@ -86,10 +108,19 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    This creates an output pickle file for the model to the specified filepath
+
+    :model param1: model output from build_model()
+    :model_filepath param2: designated directory to output the pickle file
+    """
     pickle.dump(model, open(model_filepath, 'wb'))
 
 
 def main():
+    """
+    The main function from where load, tokenize, build, evaluate, and save functions are called.
+    """
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
