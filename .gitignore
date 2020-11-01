@@ -134,3 +134,7 @@ dmypy.json
 
 # Data (due to size)
 *.csv
+
+# Incomplete projects removal
+Project_2_Webdev_Visualisation/
+
