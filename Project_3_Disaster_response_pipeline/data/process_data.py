@@ -8,9 +8,11 @@ def load_data(messages_filepath, categories_filepath):
     The function reads in the data files to pandas dataframes.
     The data frames are then merged on the common element of id.
 
-    :messages_filepath param1: directory location of the messages flat file
-    :categories_filepath param2: directory location of the categories flat file
-    :df: a data frame of the merged data sets is returned.
+    Parameters:
+    :parameter messages_filepath param1: directory location of the messages flat file
+    :parameter categories_filepath param2: directory location of the categories flat file
+    :return df: a data frame of the merged data sets is returned.
+
     """
 
     messages = pd.read_csv(messages_filepath)
@@ -26,8 +28,8 @@ def clean_data(df):
     Through a process of cleaning recreated the headers, removed duplicates,
         and created binary values of the categorical variables.
 
-    :df param1: This is the dataframe generated from the load data function
-    :df: The function returns a dataframe with cleaned data
+    :parameter:df param1: This is the dataframe generated from the load data function
+    :return:df: The function returns a dataframe with cleaned data
     """
 
     column_names = []
@@ -69,11 +71,12 @@ def save_data(df, database_filename):
     """
     The dataframe is passed into the function and saved to a sqlite dB into the database_filename variable
 
-    :df param1: This is the df that has been cleaned and is not ready for output
-    :database_filename param2: This is the desired output directory for the sqlite dB
+    :parameter:df param1: This is the df that has been cleaned and is not ready for output
+    :parameter:database_filename param2: This is the desired output directory for the sqlite dB
+    :return: None
     """
     engine = create_engine('sqlite:///' + database_filename)
-    df.to_sql('disaster_messages', engine, index=False)
+    df.to_sql('disaster_messages', engine, index=False, if_exists='replace')
 
 
 def main():

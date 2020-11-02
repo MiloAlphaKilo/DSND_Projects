@@ -20,7 +20,7 @@ def load_data(database_filepath):
     This function loads the sqlite dB into a dataframe and allocated the X, Y variables.
     It also determines the category names from the dataframe header.
 
-    :database_filename param1: this is a first param
+    :parameter:database_filename param1: The database filepath for where the sqlite dB is stored
     :returns: X, Y variables and category names.
     """
 
@@ -38,8 +38,8 @@ def tokenize(text):
     """
     The function tokenizes the text passed into the function and normalises the data.
 
-    :text param1: text strings are passed into the function
-    :clean_tokens: text strings that have been tokenized and lemmatized
+    :parameter:text param1: text strings are passed into the function
+    :return:clean_tokens: text strings that have been tokenized and lemmatized
     """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
@@ -56,7 +56,8 @@ def build_model():
     """
     build_model() constructs the pipeline and parameters before building the model using gridsearch
 
-    :model: a data model is returned
+    :parameter: None
+    :return: model: a data model is returned
     """
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize, min_df=5)),
@@ -65,16 +66,6 @@ def build_model():
                                                              min_samples_split=10)))
     ])
 
-    # pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
-    #                      ('tfidf', TfidfTransformer()),
-    #                      ('clf', MultiOutputClassifier(RandomForestClassifier()))
-    #                      ])
-
-    # Create parameters dictionary
-    # parameters = {'vect__min_df': [1, 5],
-    #               'tfidf__use_idf': [True, False],
-    #               'clf__estimator__n_estimators': [10, 25],
-    #               'clf__estimator__min_samples_split': [2, 5, 10]}
 
     parameters = {'clf__estimator__class_weight': [None],
                   'clf__estimator__n_estimators': [10, 20],
@@ -84,7 +75,7 @@ def build_model():
                   'tfidf__use_idf': [True, False],
                   }
 
-    model = GridSearchCV(estimator=pipeline, param_grid=parameters)
+    model = GridSearchCV(estimator=pipeline, param_grid=parameters, verbose=3)
 
     return model
 
@@ -93,26 +84,24 @@ def evaluate_model(model, X_test, Y_test, category_names):
     """
     evaluate_model() does exactly that building model.predict and printing out an f11 classification report
 
-    :model param1: input is the model from build_model() function
-    :X_test param2: X_test split from the train_test_split()
-    :Y_test param3: Y_test split from the train_test_split()
-    :category_names param4: The category names for the classification report normally the df headers
+    :parameter:model param1: input is the model from build_model() function
+    :parameter:X_test param2: X_test split from the train_test_split()
+    :parameter:Y_test param3: Y_test split from the train_test_split()
+    :parameter:category_names param4: The category names for the classification report normally the df headers
+    :return: None
     """
 
     Y_pred = model.predict(X_test)
     print(classification_report(Y_test, Y_pred, target_names=category_names))
-
-    # for i, col in category_names:
-    #     print(f"{col} category metrics: ")
-    #     print(classification_report(Y_test.iloc[:, i], Y_pred[:, i]))
 
 
 def save_model(model, model_filepath):
     """
     This creates an output pickle file for the model to the specified filepath
 
-    :model param1: model output from build_model()
-    :model_filepath param2: designated directory to output the pickle file
+    :parameter:model param1: model output from build_model()
+    :parameter:model_filepath param2: designated directory to output the pickle file
+    :return: None
     """
     pickle.dump(model, open(model_filepath, 'wb'))
 
